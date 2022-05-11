@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计算属性</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        姓：<input type="text" v-model="firstName"> <br/><br/>
+        名：<input type="text" v-model="lastName"> <br/><br/>
+        <!-- 全名：{{fullName()}} -->
+        <!-- 计算属性 -->
+        全名：{{fullName}} <br/><br/>
+        全名(监视属性方式)：{{fullNameW}}
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+        new Vue({
+            el: '#root',
+            data: {
+                firstName: '张',
+                lastName: '三',
+                fullNameW: '张-三'
+            },
+            methods: {
+                /* fullName(){
+                    return this.firstName + '-' + this.lastName
+                } */
+            },
+            computed: {  // 计算属性,有缓存作用
+                /* fullName: {
+                    get(){
+                        return this.firstName + '-' + this.lastName
+                    }
+                } */
+
+                // 简写 ,只考虑使用get时使用
+                fullName(){
+                    return this.firstName + '-' + this.lastName
+                }
+            },
+            watch:{   // 监视属性实现计算属性功能
+                firstName(val){
+                    setTimeout(() => {
+                        this.fullNameW = val + '-' + this.lastName
+                    }, 1000)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

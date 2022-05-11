@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模拟数据检测</title>
+</head>
+<body>
+    <script>
+        let data = {
+            name: 'yfl',
+            age: 20
+        }
+
+        /* Object.defineProperty(data, 'name', {
+            get() {
+                return data.name  // 错误 出现无线递推
+            },
+            set(val) {
+                data.name = val
+            }
+        }) */
+
+
+        const obs = new Observer(data)
+        function Observer(obj){
+            const keys = Object.keys(obj)
+
+            keys.forEach((k)=>{
+                Object.defineProperty(this,k,{
+                    get(){
+                        return obj[k]
+                    },
+                    set(val){
+                        console.log(`${k}被修改了`)
+                        obj[k] = val
+                    }
+                })
+            })
+        }
+    </script>
+</body>
+</html>

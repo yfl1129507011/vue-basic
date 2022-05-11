@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>列表渲染</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <!-- v-for指令：
+        1. 用于展示列表数据
+        2. 语法：v-for="(item, index) in xxx" :key="index"
+        3. 可遍历：数组、对象、字符串、指定次数 -->
+    <div id="root">
+        <h2>人员列表</h2>
+        <button @click.once="add">添加赵六数据</button>
+        <ul>
+            <li v-for="p in persons">
+                {{p.name}}-{{p.age}}
+                <input type="text">
+            </li>
+        </ul>
+
+
+        <h2>人员列表-过滤</h2>
+        <input v-model="keyWord" type="text" placeholder="请输入名字">
+        <button @click="sortType = 2">年龄升序</button>
+        <button @click="sortType = 1">年龄降序</button>
+        <button @click="sortType = 0">原顺序</button>
+        <ul>
+            <li v-for="p in filData">
+                {{p.name}}-{{p.age}}
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+        new Vue({
+            el: '#root',
+            data: {
+                persons: [
+                    {id:1,name:'张三',age:18},
+                    {id:2,name:'李四',age:19},
+                    {id:3,name:'王五',age:17},
+                ],
+                
+                keyWord:'',
+                data:[
+                    {id:1,name:'马冬梅',age:48},
+                    {id:2,name:'周冬雨',age:29},
+                    {id:3,name:'周杰伦',age:27},
+                    {id:3,name:'温兆伦',age:37},
+                ],
+                // filData:[]  // watch实现遍历
+
+                sortType:0 // 0原顺序 1降序 2升序
+            },
+            methods: {
+                add(){
+                    const zl = {id:4,name:'赵六',age:20}
+                    this.persons.unshift(zl)
+                }
+            },
+            /* watch:{  // watch实现遍历
+                keyWord:{
+                    immediate:true,
+                    handler(newVal) {
+                        console.log(newVal)
+                        this.filData = this.data.filter((d)=>{
+                            return d.name.indexOf(newVal) !== -1
+                        })
+                    }
+                }
+            }, */
+            computed:{
+                filData() {
+                    const arr = this.data.filter((d)=>{
+                        return d.name.indexOf(this.keyWord) !== -1
+                    })
+
+                    if(this.sortType) {  // 进行排序
+                        arr.sort((d1,d2)=>{
+                            return this.sortType === 1 ? d2.age - d1.age : d1.age - d2.age
+                        })
+                    }
+                    return arr
+                }
+            }
+        })
+    </script>
+</body>
+</html>

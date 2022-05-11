@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>非单文件组件</title>
+    <script src="../../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <name></name>
+        <age></age>
+        <hello-world></hello-world>
+    </div>
+
+    <script>
+        /* 
+            关于VueComponent:
+                1. Vue组件本质是一个名为VueComponent的构造函数，且不是程序员定义的，是Vue.extend生成的
+
+                2. 我们只需写</hello-world>或<hello-world></hello-world>，Vue解析时会帮我们创建对应组件的实例对象，
+                    即Vue帮我们执行的：new VueComponent(option)
+
+                3. 特别注意：每次调用Vue.extend，返回的都是一个全新的VueComponent
+                ```
+                Vue.extend = function (extendOptions) {
+                var Sub = function VueComponent (options) {
+                    this._init(options);
+                };
+                return Sub
+                };
+                ```
+
+                4. 关于this指向：
+                    a. 组件配置中：
+                        data函数、methods中的函数、watch中的函数、computed中的函数 它们的this均是【VueComponent实例对象】
+                    b. new Vue()配置中：
+                        data函数、methods中的函数、watch中的函数、computed中的函数 它们的this均是【Vue实例对象】
+                    
+                5. VueComponent的实例对象，以后简称vc（也称之为：组件实例对象）
+                    Vue的实例对象，以后简称vm
+         */
+        Vue.config.productionTip = false
+
+        const test = {
+            template:`
+                <div>
+                    <h2>{{test}}</h2>
+                </div>
+            `,
+            data(){
+                return {
+                    test: '测试组件嵌套',
+                }
+            }
+        }
+
+        // 创建组件
+        const a = Vue.extend({
+            template:`
+                <div>
+                    <h2>名称：{{name}}</h2>
+                    <test></test>
+                </div>
+            `,
+            data(){
+                return {
+                    name: 'aaa',
+                }
+            },
+            components:{
+                test
+            }
+        })
+
+
+        // 创建组件的简写形式
+        const b = {
+            template:`
+                <div>
+                    <h2>年龄：{{age}}</h2>
+                </div>
+            `,
+            data(){
+                return {
+                    age: 18
+                }
+            }
+        }
+
+        const c = Vue.extend({
+            name: 'ccc',  // 开发者工具中显示的组件名
+            template:`
+                <div>
+                    <h2>hello, {{name}}</h2>
+                </div>
+            `,
+            data(){
+                return {
+                    name: 'world'
+                }
+            }
+        })
+
+        // 注册全局组件
+        Vue.component('hello-world', c)
+
+        new Vue({
+            el: '#root',
+
+            // 注册局部组件
+            components:{
+                name: a,
+                age: b
+            }
+        })
+    </script>
+</body>
+</html>

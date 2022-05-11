@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>条件渲染</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h2>当前n的值：{{n}}</h2>
+        <button @click="n++">点我n+1</button>
+
+        <h2 v-show="false">v-show实现display:none</h2>
+
+        <!-- v-if与template配合使用 -->
+        <template v-if="n === 1">
+            <div>Angular</div>
+            <div>React</div>
+            <div>Vue</div>
+        </template>
+        <hr>
+
+        <div v-if="n === 1">Angular</div>
+        <div v-else-if="n === 2">React</div>
+        <div v-else="n === 1">Vue</div>
+        
+    </div>
+
+    <script>
+        Vue.config.productionTip = false
+        new Vue({
+            el: '#root',
+            data: {
+                n: 0
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>el和data的两种写法</title>
+    <script src="../js/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h1>{{name}}</h1>
+    </div>
+    <script>
+        Vue.config.productionTip = false
+        const v = new Vue({
+            // el: '#root',
+            // data的第一种写法：对象式
+            /* data: {
+                name: 'yfl'
+            } */
+
+            // data的第二种写法：函数式
+            data() {
+                return {
+                    name: 'yfl'
+                }
+            }
+        })
+        v.$mount('#root')    // 等价于 el: '#root',
+    </script>
+</body>
+</html>
